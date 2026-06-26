@@ -1,8 +1,13 @@
 # J.A.R.V.I.S — Just A Rather Very Intelligent System
 
-A personal AI assistant with a beautiful web UI. Talk to it, ask questions, search the web, generate images, analyze camera photos, and more. Runs completely on your own machine with one command.
+A personal AI assistant with a beautiful web UI. Talk to it, ask questions, search the web, generate images, analyze camera photos, and more. Runs entirely on your own machine with a single command.
 
-**Quick start:** `pip install -r requirements.txt` → add your `GROQ_API_KEY` to `.env` → `python run.py` → open http://localhost:8000
+## Quick Start Guide
+Get the assistant up and running in four simple steps:
+Install dependencies: pip install -r Requirements.txt
+Set up credentials: Open the .env file and insert your GROQ_API_KEY.
+Launch the server: Run the main script using Python Main.py.
+Access the UI: Navigate to http://127.0.0.1:8000 in your web browser.
 
 ## Features
 
@@ -14,9 +19,6 @@ A personal AI assistant with a beautiful web UI. Talk to it, ask questions, sear
 
 ### Image Generation (Free)
 Say "generate an image of..." and Jarvis creates it using Pollinations.ai. No API key, no cost, works instantly.
-
-### Camera / Vision
-Send a photo or use your webcam. Jarvis analyzes the image and answers questions about it using Llama 4 Scout (free via Groq).
 
 ### Text-to-Speech
 The AI speaks its responses as they stream in. Uses Microsoft Edge's TTS (free, no API key). The first sentence starts playing before the full response is done.
@@ -39,9 +41,9 @@ Set `GROQ_API_KEY_2`, `GROQ_API_KEY_3`, etc. in `.env` for automatic fallback. I
 
 ### What You Need
 
-- Python 3.10 or newer
+- Python 3.10 or higher
 - A free [Groq API key](https://console.groq.com)
-- (Optional) A free [Tavily API key](https://tavily.com) for web search
+- (Optional) A free [HuggingFaceAPIKey](https://huggingface.co/) for web search
 
 ### Installation
 
@@ -59,8 +61,6 @@ TAVILY_API_KEY=your_tavily_key_here
 ASSISTANT_NAME= 
 JARVIS_USER_TITLE=Sir
 JARVIS_OWNER_NAME=Your Name
-TTS_VOICE=
-TTS_RATE=+22%
 ```
 
 3. Start the server:
@@ -74,40 +74,14 @@ python run.py
 
 ## Project Structure
 
-```
-JARVIS/
-├── frontend/                  # Web UI (HTML, CSS, JS — no build tools)
-│   ├── index.html
-│   ├── style.css
-│   ├── script.js              # Chat, streaming, TTS player, voice input
-│   └── orb.js                 # Animated WebGL orb (GLSL shaders)
-│
-├── app/                       # Backend (FastAPI)
-│   ├── main.py                # All API endpoints, streaming, TTS
-│   ├── models.py              # Request/response data models
-│   ├── services/
-│   │   ├── chat_service.py    # Sessions, history, message flow
-│   │   ├── groq_service.py    # General chat (Groq LLM + vector store)
-│   │   ├── realtime_service.py # Web search + Groq (Realtime mode)
-│   │   ├── brain_service.py   # Two-stage intent classifier (Jarvis mode)
-│   │   ├── vector_store.py    # FAISS index + local embeddings (memory)
-│   │   ├── task_executor.py   # Image gen, YouTube, web open, etc.
-│   │   ├── task_manager.py    # Background task queue and polling
-│   │   └── vision_service.py  # Camera/image analysis (Llama 4 Scout)
-│   └── utils/
-│       ├── time_info.py       # Current time for AI system prompt
-│       ├── retry.py           # Retry wrapper for API calls
-│       └── key_rotation.py    # Brain/chat use different API keys
-│
-├── database/                  # Created automatically on first run
-│   ├── learning_data/         # Your .txt files (personal info for the AI)
-│   ├── chats_data/            # Saved conversations (JSON)
-│   └── vector_store/          # FAISS index files
-│
-├── config.py                  # All settings and system prompt
-├── run.py                     # Start the server: python run.py
-├── requirements.txt
-└── .env                       # Your API keys (never commit this file)
+```text
+├── Backend/          # Core backend logic and API handling
+├── Data/             # Stores personal learning data and chat histories
+├── Frontend/         # Web UI assets and styling
+├── .env              # Environment variables and API keys
+├── Main.py           # Application entry point
+├── Requirements.txt  # Python dependencies
+└── README.md         # Project documentation
 ```
 
 ---
@@ -123,7 +97,7 @@ JARVIS/
 
 ### Realtime Mode Flow
 1. You send a message
-2. **Query extraction (8B model, ~300ms):** Converts your messy conversational message into a clean search query. "what about him?" → "Elon Musk latest news 2026"
+2. **Query extraction (8B model, ~300ms):** Converts your messy conversational message into a clean search query. "What about him?" → "Elon Musk latest news 2026"
 3. **Tavily search:** Fetches 5 web results with AI-synthesized answer
 4. Search results are injected into the AI prompt
 5. **Groq (70B):** Answers using the search results as source
