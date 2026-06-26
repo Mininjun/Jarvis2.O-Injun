@@ -1,4 +1,4 @@
-# J.A.R.V.I.S — Just A Rather Very Intelligent System
+# J.A.R.V.I.S — Virtual Artificial Intelligence System
 
 A personal AI assistant with a beautiful web UI. Talk to it, ask questions, search the web, generate images, analyze camera photos, and more. Runs entirely on your own machine with a single command.
 
